@@ -8,6 +8,12 @@ class GildedRose
     @items.each do |item|
       if item.name == "Aged Brie"
         update_brie(item)
+      elsif item.name == "Sulfuras, Hand of Ragnaros"
+      
+      elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
+        update_backstage(item)
+
+        
       else
         if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
           if item.quality > 0
@@ -65,6 +71,18 @@ end
 
 def update_brie(item)
   item.quality += 1 if item.quality < 50
+  item.sell_in -= 1
+end
+
+def update_backstage(item)
+  if item.quality < 50
+    item.quality += 1 if item.sell_in > 10
+    item.quality += 2 if item.sell_in.between?(6, 10)
+    item.quality += 3 if item.sell_in.between?(1, 5)
+    item.quality = 0 if item.sell_in <= 0
+  else
+    return
+  end
   item.sell_in -= 1
 end
 
