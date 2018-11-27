@@ -12,7 +12,9 @@ class GildedRose
       
       elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
         update_backstage(item)
-
+        
+      elsif item.name == "Conjured Mana Cake"
+        update_conjured(item)
         
       else
         if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
@@ -85,6 +87,12 @@ def update_backstage(item)
   end
   item.sell_in -= 1
 end
+
+def update_conjured(item)
+  (item.sell_in > 0 ? item.quality -= 2 : item.quality -= 4) if item.quality > 0 
+  item.sell_in -= 1
+end
+
 
 class Item
   attr_accessor :name, :sell_in, :quality
