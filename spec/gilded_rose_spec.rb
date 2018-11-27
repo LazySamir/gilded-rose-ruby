@@ -65,6 +65,46 @@ describe GildedRose do
       end
     end
     
-    
+    describe "for Backstage Passes" do
+      describe "item quality" do
+        it "does not increase past 50" do
+          items[3].quality = 50
+          expect{gilded_rose.update_quality}.to_not change{items[3].quality}
+        end
+        
+        it "increases by 1 when sell_in value is above 10" do
+          expect{gilded_rose.update_quality}.to change{items[3].quality}.by(+1)
+        end
+        
+        it "increases by 2 when sell_in value is 10 to 6" do
+          items[3].sell_in = 10
+          expect{gilded_rose.update_quality}.to change{items[3].quality}.by(+2)
+          
+          items[3].sell_in = 6
+          expect{gilded_rose.update_quality}.to change{items[3].quality}.by(+2)
+        end
+        it "increases by 3 when sell_in value is 5 to 1" do
+          items[3].sell_in = 5
+          expect{gilded_rose.update_quality}.to change{items[3].quality}.by(+3)
+          
+          items[3].sell_in = 1
+          expect{gilded_rose.update_quality}.to change{items[3].quality}.by(+3)
+        end
+        it "equals 0 after sell_in value reaches 0" do
+          items[3].sell_in = 0
+          gilded_rose.update_quality
+          expect(items[3].quality).to eq(0)
+          
+          items[3].sell_in = -10
+          gilded_rose.update_quality
+          expect(items[3].quality).to eq(0)
+        end
+      end
+      describe "item sell_in value" do
+        it "decreases by 1" do
+          expect{gilded_rose.update_quality}.to change{items[3].sell_in}.by(-1)
+        end  
+      end
+    end
   end
 end
